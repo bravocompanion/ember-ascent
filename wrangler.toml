@@ -1,0 +1,7 @@
+name = "ember-ascent"
+compatibility_date = "2026-09-02"
+
+# Cloudflare Workers static assets deployment.
+# First export the Godot Web preset so build/web/index.html exists.
+[assets]
+directory = "./build/web"
