@@ -97,6 +97,7 @@ func _build_ui() -> void:
 	add_child(player_panel)
 
 	var art := HeroArtScript.new()
+	art.hero_id = str(hero.get("id", hero["name"]))
 	art.accent = hero["accent"]
 	art.custom_minimum_size = Vector2(190, 235)
 	player_panel.add_child(art)
