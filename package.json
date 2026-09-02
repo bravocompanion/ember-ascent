@@ -1,0 +1,11 @@
+{
+  "name": "ember-ascent-deploy",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "deploy:pages": "wrangler pages deploy build/web --project-name=ember-ascent"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
