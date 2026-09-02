@@ -1,1 +1,0 @@
-Original asset migration follows GODOT_PARITY.md. Replace procedural placeholders with original hero/enemy/card/relic/UI/VFX/audio assets while keeping stable paths and gameplay IDs.
