@@ -12,6 +12,13 @@ builds/
 *.exe
 *.zip
 
+# Keep the Web export deployable by Cloudflare.
+# Godot exports Web to build/web/index.html (see export_presets.cfg).
+!build/
+build/*
+!build/web/
+!build/web/**
+
 # OS / editors
 .DS_Store
 Thumbs.db
