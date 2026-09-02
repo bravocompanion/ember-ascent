@@ -9,9 +9,9 @@ var run_seed := 0
 var forge_upgrades := {"vitality": 0, "power": 0}
 
 var heroes := [
-	{"name":"Ashwarden","hp":82,"energy":3,"tagline":"Balanced defender","accent":Color("#d86b3d")},
-	{"name":"Cinderblade","hp":70,"energy":4,"tagline":"Fast aggressive striker","accent":Color("#e34d4d")},
-	{"name":"Emberseer","hp":66,"energy":3,"tagline":"Skills and burn synergy","accent":Color("#9c66e4")}
+	{"id":"ashwarden","name":"Ashwarden","hp":82,"energy":3,"tagline":"Balanced defender","accent":Color("#d86b3d")},
+	{"id":"cinderblade","name":"Cinderblade","hp":70,"energy":4,"tagline":"Fast aggressive striker","accent":Color("#e34d4d")},
+	{"id":"emberseer","name":"Emberseer","hp":66,"energy":3,"tagline":"Skills and burn synergy","accent":Color("#9c66e4")}
 ]
 
 func _ready() -> void:
