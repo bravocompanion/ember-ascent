@@ -13,7 +13,7 @@ func _build_ui() -> void:
 
 	var title := Label.new()
 	title.text = "CHOOSE YOUR HERO"
-	title.position = Vector2(0, 28)
+	title.position = Vector2(0, 20)
 	title.size = Vector2(1280, 58)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 36)
@@ -21,8 +21,8 @@ func _build_ui() -> void:
 	add_child(title)
 
 	var row := HBoxContainer.new()
-	row.position = Vector2(105, 105)
-	row.size = Vector2(1070, 510)
+	row.position = Vector2(105, 82)
+	row.size = Vector2(1070, 540)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 26)
 	add_child(row)
@@ -32,23 +32,25 @@ func _build_ui() -> void:
 
 	var back := Button.new()
 	back.text = "BACK"
-	back.position = Vector2(32, 646)
+	back.position = Vector2(32, 650)
 	back.size = Vector2(150, 48)
 	back.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/main.tscn"))
 	add_child(back)
 
 func _hero_card(hero: Dictionary) -> Control:
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(330, 500)
+	panel.custom_minimum_size = Vector2(330, 530)
 
 	var box := VBoxContainer.new()
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	box.add_theme_constant_override("separation", 8)
+	box.add_theme_constant_override("separation", 7)
 	panel.add_child(box)
 
 	var art := HeroArtScript.new()
+	art.hero_id = str(hero.get("id", hero["name"]))
 	art.accent = hero["accent"]
-	art.custom_minimum_size = Vector2(300, 300)
+	art.custom_minimum_size = Vector2(300, 330)
+	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(art)
 
 	var name_label := Label.new()
