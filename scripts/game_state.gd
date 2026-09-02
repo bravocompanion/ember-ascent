@@ -6,6 +6,7 @@ var selected_hero := "Ashwarden"
 var ember_shards := 120
 var forge_claim_ready := true
 var run_seed := 0
+var forge_upgrades := {"vitality": 0, "power": 0}
 
 var heroes := [
 	{"name":"Ashwarden","hp":82,"energy":3,"tagline":"Balanced defender","accent":Color("#d86b3d")},
@@ -23,15 +24,28 @@ func start_new_run(hero_name: String) -> void:
 
 func hero_data() -> Dictionary:
 	for hero in heroes:
-		if hero.name == selected_hero:
+		if hero["name"] == selected_hero:
 			return hero
 	return heroes[0]
+
+func add_forge_upgrade(kind: String) -> void:
+	if not forge_upgrades.has(kind):
+		forge_upgrades[kind] = 0
+	forge_upgrades[kind] = int(forge_upgrades[kind]) + 1
+
+func vitality_bonus() -> int:
+	return int(forge_upgrades.get("vitality", 0)) * 4
+
+func power_bonus() -> int:
+	return int(forge_upgrades.get("power", 0))
 
 func save_meta() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("profile", "selected_hero", selected_hero)
 	cfg.set_value("profile", "ember_shards", ember_shards)
 	cfg.set_value("profile", "forge_claim_ready", forge_claim_ready)
+	cfg.set_value("forge", "vitality", int(forge_upgrades.get("vitality", 0)))
+	cfg.set_value("forge", "power", int(forge_upgrades.get("power", 0)))
 	cfg.save(SAVE_PATH)
 
 func load_meta() -> void:
@@ -41,3 +55,5 @@ func load_meta() -> void:
 	selected_hero = str(cfg.get_value("profile", "selected_hero", selected_hero))
 	ember_shards = int(cfg.get_value("profile", "ember_shards", ember_shards))
 	forge_claim_ready = bool(cfg.get_value("profile", "forge_claim_ready", forge_claim_ready))
+	forge_upgrades["vitality"] = int(cfg.get_value("forge", "vitality", 0))
+	forge_upgrades["power"] = int(cfg.get_value("forge", "power", 0))
