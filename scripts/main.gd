@@ -11,8 +11,13 @@ func _build_ui() -> void:
 
 	var glow := ColorRect.new()
 	glow.color = Color("#251727")
-	glow.position = Vector2(0, 380)
-	glow.size = Vector2(1280, 340)
+	glow.anchor_top = 0.52
+	glow.anchor_right = 1.0
+	glow.anchor_bottom = 1.0
+	glow.offset_left = 0.0
+	glow.offset_top = 0.0
+	glow.offset_right = 0.0
+	glow.offset_bottom = 0.0
 	bg.add_child(glow)
 
 	var center := VBoxContainer.new()
@@ -58,13 +63,6 @@ func _build_ui() -> void:
 	shard.add_theme_font_size_override("font_size", 16)
 	shard.add_theme_color_override("font_color", Color("#e5d4c8"))
 	center.add_child(shard)
-
-	var version := Label.new()
-	version.text = "Godot migration baseline"
-	version.position = Vector2(24, 680)
-	version.add_theme_font_size_override("font_size", 13)
-	version.add_theme_color_override("font_color", Color("#786d7a"))
-	add_child(version)
 
 func _menu_button(text_value: String, callback: Callable) -> Button:
 	var button := Button.new()
