@@ -82,12 +82,21 @@ func _build_ui() -> void:
 	quit.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/main.tscn"))
 	top_bar.add_child(quit)
 
+	# Enemy formations can grow without pushing a target outside the screen.
+	var enemy_scroll := ScrollContainer.new()
+	enemy_scroll.position = Vector2(340, 88)
+	enemy_scroll.size = Vector2(910, 260)
+	enemy_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	enemy_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	enemy_scroll.follow_focus = true
+	add_child(enemy_scroll)
+
 	enemy_row = HBoxContainer.new()
-	enemy_row.position = Vector2(360, 92)
-	enemy_row.size = Vector2(880, 250)
+	enemy_row.custom_minimum_size = Vector2(890, 245)
+	enemy_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	enemy_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	enemy_row.add_theme_constant_override("separation", 22)
-	add_child(enemy_row)
+	enemy_scroll.add_child(enemy_row)
 	_build_enemy_widgets()
 
 	var player_panel := VBoxContainer.new()
@@ -104,25 +113,39 @@ func _build_ui() -> void:
 
 	var hero_name := Label.new()
 	hero_name.text = str(hero["name"])
+	hero_name.custom_minimum_size = Vector2(260, 30)
 	hero_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hero_name.add_theme_font_size_override("font_size", 20)
 	player_panel.add_child(hero_name)
 
 	status_label = Label.new()
 	status_label.position = Vector2(300, 352)
-	status_label.size = Vector2(680, 42)
+	status_label.size = Vector2(680, 48)
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	status_label.add_theme_font_size_override("font_size", 18)
 	status_label.add_theme_color_override("font_color", Color("#e7d5b8"))
 	status_label.text = "Choose a card"
 	add_child(status_label)
 
+	# Cards now live inside a horizontal ScrollContainer. The current five-card
+	# hand fits without scrolling, while larger future hands remain fully usable
+	# instead of being cropped by the right edge of the viewport.
+	var hand_scroll := ScrollContainer.new()
+	hand_scroll.position = Vector2(32, 410)
+	hand_scroll.size = Vector2(1068, 275)
+	hand_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	hand_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	hand_scroll.follow_focus = true
+	add_child(hand_scroll)
+
 	hand_row = HBoxContainer.new()
-	hand_row.position = Vector2(48, 420)
-	hand_row.size = Vector2(1050, 250)
+	hand_row.custom_minimum_size = Vector2(1048, 250)
+	hand_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hand_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	hand_row.add_theme_constant_override("separation", 12)
-	add_child(hand_row)
+	hand_scroll.add_child(hand_row)
 	_build_hand_widgets()
 
 	end_turn_button = Button.new()
@@ -145,7 +168,9 @@ func _build_enemy_widgets() -> void:
 	for i in enemies.size():
 		var enemy_button := Button.new()
 		enemy_button.custom_minimum_size = Vector2(245, 220)
+		enemy_button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		enemy_button.add_theme_font_size_override("font_size", 18)
+		enemy_button.tooltip_text = "%s\nHP %d / %d\nIntent: %s" % [enemies[i]["name"], enemies[i]["hp"], enemies[i]["max_hp"], enemies[i]["intent"]]
 		enemy_button.pressed.connect(_on_enemy_pressed.bind(i))
 		enemy_row.add_child(enemy_button)
 		enemy_buttons.append(enemy_button)
@@ -158,6 +183,7 @@ func _build_hand_widgets() -> void:
 		button.custom_minimum_size = Vector2(195, 230)
 		button.text = "%s\n\n%s\n\n%s\n\nCOST %d" % [card["name"], card["type"], card["desc"], card["cost"]]
 		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		button.tooltip_text = "%s — %s — Cost %d\n%s" % [card["name"], card["type"], card["cost"], card["desc"]]
 		button.add_theme_font_size_override("font_size", 15)
 		button.pressed.connect(_on_card_pressed.bind(i))
 		hand_row.add_child(button)
