@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.bravocompanion.emberascent'
+    namespace 'com.redterracestudio.emberascent'
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.bravocompanion.emberascent"
+        applicationId "com.redterracestudio.emberascent"
         minSdk 24
         targetSdk 36
         versionCode 1
