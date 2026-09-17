@@ -1,4 +1,4 @@
-package com.bravocompanion.emberascent;
+package com.redterracestudio.emberascent;
 
 import android.app.Activity;
 import android.content.Intent;
