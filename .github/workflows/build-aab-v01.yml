@@ -1,0 +1,39 @@
+name: Build Ember Ascent v0.1 AAB
+
+on:
+  push:
+    branches:
+      - android-aab-v0.1-build
+    paths:
+      - 'playstore_build/**'
+      - '.github/workflows/build-aab-v01.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 9.6.0
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.0'
+
+      - name: Build unsigned release AAB
+        working-directory: playstore_build
+        run: gradle :app:bundleRelease --stacktrace
+
+      - name: Upload unsigned AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: ember-ascent-v0.1-unsigned-aab
+          path: playstore_build/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
